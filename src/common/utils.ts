@@ -64,19 +64,34 @@ export function createForm(payload: string | Payload): FormData {
 }
 
 export function getImgurApiResponseFromResponse(
-  response: AxiosResponse
+  response: AxiosResponse | string
 ): ImgurApiResponse {
-  if (
-    typeof response.data?.status !== 'undefined' &&
-    typeof response.data?.success !== 'undefined'
+  let success = true;
+  let data;
+  let status = 200;
+
+  if (typeof response === 'string') {
+    data = response as string;
+    status = 500;
+    success = false;
+  } else if (
+    !!response &&
+    typeof response?.data?.status !== 'undefined' &&
+    typeof response?.data?.success !== 'undefined'
   ) {
-    return response.data;
+    success = response.data.success;
+    status = response.data.status;
+    data = response.data.data?.error
+      ? response.data.data?.error
+      : response.data.data;
+  } else {
+    status = response ? response.status : status;
+    data = response ? response.data : data;
   }
 
   return {
-    data: response.data,
-    status: response.status,
-    // TODO: determine the success of the call?
-    success: true,
+    data,
+    status,
+    success,
   };
 }
