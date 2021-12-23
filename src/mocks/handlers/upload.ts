@@ -69,5 +69,12 @@ export const postHandler: Handler = (req, res, ctx) => {
   //   return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
   // }
 
-  return res(ctx.json(createResponse({ title: title as string, description: description as string })));
+  return res(
+    ctx.json(
+      createResponse({
+        title: title as string,
+        description: description as string,
+      })
+    )
+  );
 };
