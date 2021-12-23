@@ -75,6 +75,7 @@ export function getImgurApiResponseFromResponse(
     status = 500;
     success = false;
   } else if (
+    !!response && 
     typeof response?.data?.status !== 'undefined' &&
     typeof response?.data?.success !== 'undefined'
   ) {
@@ -84,8 +85,8 @@ export function getImgurApiResponseFromResponse(
       ? response.data.data?.error
       : response.data.data;
   } else {
-    status = response.status;
-    data = response.data;
+    status = response ? response.status : status;
+    data = response ? response.data : data;
   }
 
   return {

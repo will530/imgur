@@ -1,11 +1,11 @@
 import { Handler } from './';
 
-const BadRequestErrorResponse = {
+const BadReqestErrorResponse = {
   status: 400,
   success: false,
   data: {
-    error: 'Bad Request',
-    request: '/3/upload',
+    error: 'Bad Reqest',
+    reqest: '/3/upload',
     method: 'POST',
   },
 };
@@ -37,32 +37,32 @@ function createResponse({
 }
 
 export const postHandler: Handler = (req, res, ctx) => {
-  const {
-    image = null,
-    stream = null,
-    base64 = null,
-    type = null,
-    title = null,
-    description = null,
-  } = req.body as Record<string, string>;
+  
+  const formData = req.body as FormData
+  const image = formData.get('image')?.valueOf()
+  const stream = formData.get('stream')?.valueOf()
+  const base64 = formData.get('base64')?.valueOf()
+  const type = formData.get('type')?.valueOf() as string
+  const title = formData.get('title')?.valueOf() as string
+  const description = formData.get('description')?.valueOf() as string
 
-  // image or stream or base64 field is always required
-  if (image !== null && stream !== null && base64 !== null) {
-    return res(ctx.status(400), ctx.json(BadRequestErrorResponse));
+  if (image === null && stream === null && base64 === null) {
+    return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
   }
 
-  // type is optional when uploading a file, but required
+  // type is optional when uploading a file, but reqired
   // for any other type
   if (type !== null) {
     // only these types are allowed
     if (!['stream', 'url', 'base64'].includes(type as string)) {
-      return res(ctx.status(400), ctx.json(BadRequestErrorResponse));
+      return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
     }
     // if type is not specified we assume we're uploading a file.
     // but we need to make sure a file was sent in the image field
-  } else if (typeof image !== 'object') {
-    return res(ctx.status(400), ctx.json(BadRequestErrorResponse));
-  }
+  } 
+  // else if (typeof image !== 'object') {
+  //   return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
+  // }
 
   return res(ctx.json(createResponse({ title, description })));
 };
