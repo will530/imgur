@@ -38,12 +38,18 @@ function createResponse({
 
 export const postHandler: Handler = (req, res, ctx) => {
   const formData = req.body as FormData;
-  const image = formData.get('image')?.valueOf();
-  const stream = formData.get('stream')?.valueOf();
-  const base64 = formData.get('base64')?.valueOf();
-  const type = formData.get('type')?.valueOf() as string;
-  const title = formData.get('title')?.valueOf() as string;
-  const description = formData.get('description')?.valueOf() as string;
+  const _image = formData.get('image');
+  const _stream = formData.get('stream');
+  const _base64 = formData.get('base64');
+  const _type = formData.get('type');
+  const _title = formData.get('title');
+  const _description = formData.get('description');
+  const image = _image ? _image.valueOf() : null;
+  const stream = _stream ? _stream.valueOf() : null;
+  const base64 = _base64 ? _base64.valueOf() : null;
+  const type = _type ? _type.valueOf() : null;
+  const title = _title ? _title.valueOf() : null;
+  const description = _description ? _description.valueOf() : null;
 
   if (image === null && stream === null && base64 === null) {
     return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
@@ -63,5 +69,5 @@ export const postHandler: Handler = (req, res, ctx) => {
   //   return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
   // }
 
-  return res(ctx.json(createResponse({ title, description })));
+  return res(ctx.json(createResponse({ title: title as string, description: description as string })));
 };
