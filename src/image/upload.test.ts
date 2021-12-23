@@ -17,7 +17,6 @@
 // //   createReadStream(): ReadStream;
 // // }
 
-
 // // const mockReadStream = { pipe: jest.fn() };
 // // const mockPngFile: FileUpload = {
 // //   filename: '1x1.png',
@@ -35,8 +34,8 @@
 describe('test imgur uploads', () => {
   test('no tests ready because issues', async () => {
     expect(true).toBe(true);
-  })
-})
+  });
+});
 //   test('upload one image via url string, receive one response', async () => {
 //     const accessToken = 'abc123';
 //     const client = new ImgurClient({ accessToken });

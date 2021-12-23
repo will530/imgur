@@ -37,14 +37,13 @@ function createResponse({
 }
 
 export const postHandler: Handler = (req, res, ctx) => {
-  
-  const formData = req.body as FormData
-  const image = formData.get('image')?.valueOf()
-  const stream = formData.get('stream')?.valueOf()
-  const base64 = formData.get('base64')?.valueOf()
-  const type = formData.get('type')?.valueOf() as string
-  const title = formData.get('title')?.valueOf() as string
-  const description = formData.get('description')?.valueOf() as string
+  const formData = req.body as FormData;
+  const image = formData.get('image')?.valueOf();
+  const stream = formData.get('stream')?.valueOf();
+  const base64 = formData.get('base64')?.valueOf();
+  const type = formData.get('type')?.valueOf() as string;
+  const title = formData.get('title')?.valueOf() as string;
+  const description = formData.get('description')?.valueOf() as string;
 
   if (image === null && stream === null && base64 === null) {
     return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
@@ -59,7 +58,7 @@ export const postHandler: Handler = (req, res, ctx) => {
     }
     // if type is not specified we assume we're uploading a file.
     // but we need to make sure a file was sent in the image field
-  } 
+  }
   // else if (typeof image !== 'object') {
   //   return res(ctx.status(400), ctx.json(BadReqestErrorResponse));
   // }
