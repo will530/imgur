@@ -51,6 +51,10 @@ export function createForm(payload: string | Payload): FormData {
   }
 
   for (const [key, value] of Object.entries(payload)) {
+    if (key === "video") {
+      form.append(key, payload.stream, payload.filename);
+    }
+
     const supportedUploadObjectTypes = ['base64', 'stream'];
     if (supportedUploadObjectTypes.indexOf(key) !== -1) {
       if (supportedUploadObjectTypes.indexOf(payload.type as string) !== -1) {
