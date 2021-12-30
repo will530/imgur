@@ -3,5 +3,6 @@ lib/
 package-lock.json
 .github
 src/coverage/
+example
 imgur.js
 imgur.node.js

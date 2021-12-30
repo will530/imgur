@@ -51,8 +51,8 @@ export function createForm(payload: string | Payload): FormData {
   }
 
   for (const [key, value] of Object.entries(payload)) {
-    if (key === "video") {
-      form.append(key, payload.stream, payload.filename);
+    if (key === 'video') {
+      form.append(key, payload.stream, payload.name ?? 'file.mp4');
       continue;
     }
 
