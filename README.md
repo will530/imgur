@@ -35,16 +35,17 @@ import { ImgurClient } from 'imgur';
 // CommonJS syntax
 const { ImgurClient } = require('imgur');
 
-let client;
+// browser script include
+const client = new imgur({ clientId: env.CLIENT_ID });
 
 // if you already have an access token acquired
-client = new ImgurClient({ accessToken: process.env.ACCESS_TOKEN });
+const client = new ImgurClient({ accessToken: process.env.ACCESS_TOKEN });
 
 // or your client ID
-client = new ImgurClient({ clientId: process.env.CLIENT_ID });
+const client = new ImgurClient({ clientId: process.env.CLIENT_ID });
 
 // or your username/password/client id to retrieve an access token automatically:
-client = new ImgurClient({
+const client = new ImgurClient({
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   clientId: process.env.CLIENT_ID,

@@ -1,0 +1,48 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer" />
+    <meta type="title" content="Imgur API test">
+    <title>Imgur API test</title>
+    <script src="../dist/imgur.js"></script>
+    <script src="env.js"></script>
+
+</head>
+
+<body>
+
+    <img id="image" src="small.jpg">
+    <video id="video" src="small.mp4" controls>
+
+    <script defer>
+        const init = () => {
+            function getImageStream(img) {
+                const canvas = document.createElement("canvas");
+                canvas.width = canvas.height = 100;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0)
+                return canvas.toDataURL();
+            }
+
+            const album = env.ALBUM;
+            const client = new imgur({
+                accessToken: env.ACCESS_TOKEN,
+                clientId: env.CLIENT_ID,
+            });
+
+            const image = document.getElementById('image')
+            const imageStream = getImageStream(image)
+            client.upload({ album, image: imageStream, type: 'stream' }).then(console.log);
+
+            const video = document.getElementById('video')
+            const videoStream = getImageStream(video)
+            client.upload({ album, image: videoStream, type: 'stream' }).then(console.log);
+        }
+        init()
+    </script>
+
+</body>
+
+</html>

@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
 const generalConfig = {
+  devtool: false,
   watchOptions: {
     aggregateTimeout: 600,
     ignored: /node_modules/,
@@ -24,6 +25,10 @@ const generalConfig = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      crypto: require.resolve('crypto-browserify'),
+    },
   },
 };
 
@@ -53,15 +58,16 @@ const browserConfig = {
 };
 
 module.exports = (env, argv) => {
+  Object.assign(nodeConfig, generalConfig);
+  Object.assign(browserConfig, generalConfig);
+
   if (argv.mode === 'development') {
-    generalConfig.devtool = 'cheap-module-source-map';
+    nodeConfig.devtool = 'cheap-module-source-map';
+    browserConfig.devtool = 'cheap-module-source-map';
   } else if (argv.mode === 'production') {
   } else {
     throw new Error('Specify env');
   }
-
-  Object.assign(nodeConfig, generalConfig);
-  Object.assign(browserConfig, generalConfig);
 
   return [nodeConfig, browserConfig];
 };
