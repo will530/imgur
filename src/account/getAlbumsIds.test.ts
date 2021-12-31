@@ -1,6 +1,4 @@
-test('returns an array of album ids response', async () => {
-  test.todo('pass this test');
-});
+test.todo('returns an array of album ids response');
 // import { ImgurClient } from '../client';
 // import { getAlbumsIds } from './getAlbumsIds';
 

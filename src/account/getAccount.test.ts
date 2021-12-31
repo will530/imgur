@@ -1,6 +1,4 @@
-test('returns an account response', async () => {
-  test.todo('pass this test');
-});
+test.todo('returns an account response');
 // import { ImgurClient } from '../client';
 // import { getAccount } from './getAccount';
 

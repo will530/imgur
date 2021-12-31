@@ -28,12 +28,14 @@ export async function updateImage(
       return new Promise(async function (resolve) {
         return resolve(
           getImgurApiResponseFromResponse(
-            await client.request({
-              url,
-              method: 'POST',
-              data: form,
-              headers: form.getHeaders(),
-            }).catch(e => e.response)
+            await client
+              .request({
+                url,
+                method: 'POST',
+                data: form,
+                headers: form.getHeaders(),
+              })
+              .catch((e) => e.response)
           ) as ImgurApiResponse<boolean>
         );
       }) as Promise<ImgurApiResponse<boolean>>;
