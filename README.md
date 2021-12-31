@@ -35,16 +35,17 @@ import { ImgurClient } from 'imgur';
 // CommonJS syntax
 const { ImgurClient } = require('imgur');
 
-let client;
+// browser script include
+const client = new imgur({ clientId: env.CLIENT_ID });
 
 // if you already have an access token acquired
-client = new ImgurClient({ accessToken: process.env.ACCESS_TOKEN });
+const client = new ImgurClient({ accessToken: process.env.ACCESS_TOKEN });
 
 // or your client ID
-client = new ImgurClient({ clientId: process.env.CLIENT_ID });
+const client = new ImgurClient({ clientId: process.env.CLIENT_ID });
 
 // or your username/password/client id to retrieve an access token automatically:
-client = new ImgurClient({
+const client = new ImgurClient({
   username: process.env.USERNAME,
   password: process.env.PASSWORD,
   clientId: process.env.CLIENT_ID,
@@ -75,12 +76,12 @@ If you want to provide metadata, such as a title, description, etc., then pass a
 // multiple images via an array of absolute paths
 const responses = await client.upload([
   {
-    stream: createReadStream('/home/kai/dank-meme.jpg'),
+    image: createReadStream('/home/kai/dank-meme.jpg'),
     title: 'Meme',
     description: 'Dank Meme',
   },
   {
-    stream: createReadStream('/home/kai/cat.mp4'),
+    image: createReadStream('/home/kai/cat.mp4'),
     title: 'A Cat Movie',
     description: 'Caturday',
   },
@@ -93,7 +94,6 @@ Acceptable key/values match what [the Imgur API expects](https://apidocs.imgur.c
 | Key             | Description                                                                                                                         |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `image`         | A string that is a URL pointing to a remote image (up to 10MB)                                                                      |
-| `stream`        | A readable stream that is to be piped to the upload method                                                                          |
 | `base64`        | A base 64 object that is to be placed in the the upload form                                                                        |
 | `album`         | The id of the album you want to add the media to. For anonymous albums, album should be the deletehash that is returned at creation |
 | `type`          | The type of the media that's being transmitted; `stream`, `base64` or `url`                                                         |

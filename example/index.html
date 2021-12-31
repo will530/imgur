@@ -1,0 +1,70 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta type="title" content="Imgur API test">
+    <title>Imgur API test</title>
+    <script src="../dist/imgur.js"></script>
+    <script src="env.js"></script>
+
+</head>
+
+<body>
+
+    <img id="image" src="" style="min-width: 25vw;" />
+    <video id="video" src="" controls></video>
+
+    <div>
+        <label for="uploadImage">Upload Image</label>
+        <input id="uploadImage" type="file" rel="image">
+        <label for="uploadVideo">Upload Video</label>
+        <input id="uploadVideo" type="file" rel="video">
+    </div>
+
+    <script defer>
+        const album = env.ALBUM;
+        let client;
+
+        const getImageStream = (img) => {
+            const canvas = document.createElement("canvas")
+            canvas.width = canvas.height = 100
+            const ctx = canvas.getContext("2d")
+            ctx.drawImage(img, 0, 0)
+            return canvas.toDataURL()
+        }
+
+        const upload = (e) => {
+            const file = e.target.files.length ? e.target.files[0] : null
+            const targetEl = document.getElementById(e.target.getAttribute('rel'))
+            client.upload({
+                    album,
+                    image: file,
+                    type: 'stream'
+                })
+                .then((response) => {
+                    const r = response.length ? response[0] : response
+                    const i = r.success ? r.data : null
+                    if (i) {
+                        targetEl.src = i.link
+                    }
+                })
+        }
+
+        const init = () => {
+            client = new imgur({
+                accessToken: env.ACCESS_TOKEN,
+                clientId: env.CLIENT_ID,
+            })
+
+            const uploadImageEl = document.getElementById('uploadImage')
+            const uploadVideoEl = document.getElementById('uploadVideo')
+            uploadImageEl.addEventListener('change', upload)
+            uploadVideoEl.addEventListener('change', upload)
+        }
+        init()
+    </script>
+
+</body>
+
+</html>

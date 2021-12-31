@@ -4,3 +4,4 @@ src/coverage
 lib
 dist
 .DS_Store
+.env

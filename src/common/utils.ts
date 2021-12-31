@@ -60,6 +60,15 @@ export function createForm(payload: string | Payload): FormData {
       form.append(key, value);
     }
   }
+
+  form.getHeaders = form.getHeaders
+    ? form.getHeaders
+    : () => {
+        return {
+          'Content-Type': 'multipart/form-data',
+        };
+      };
+
   return form;
 }
 
