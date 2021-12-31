@@ -127,7 +127,7 @@ export class ImgurClient extends EventEmitter {
   }
 
   upload(
-    payload: string | string[] | Payload | Payload[]
+    payload: Payload | Payload[]
   ): Promise<ImgurApiResponse<ImageData> | ImgurApiResponse<ImageData>[]> {
     return upload(this, payload);
   }

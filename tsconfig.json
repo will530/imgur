@@ -11,6 +11,8 @@
     "outDir": "lib",
     "esModuleInterop": true,
     "importHelpers": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": true
   }
 }
