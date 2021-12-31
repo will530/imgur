@@ -14,11 +14,12 @@ export async function upload(
   payload = Array.isArray(payload) ? payload : [payload];
   const promises = payload.map((p: Payload) => {
     const form = createForm(p);
+    const image = (p.image as any)
+    const filename = typeof image === 'string' ? image : (image.path ?? image.name)
     const isVideo =
       p.type === 'stream' &&
-      (typeof p.image === 'string'
-        ? p.image.indexOf('.mp4') !== -1
-        : (p.image as any).path.indexOf('.mp4') !== -1);
+      (filename.indexOf('.mp4') !== -1 ||
+      filename.indexOf('.avi') !== -1);
     const url = isVideo ? UPLOAD_ENDPOINT : IMAGE_ENDPOINT;
 
     /* eslint no-async-promise-executor: 0 */
@@ -34,7 +35,7 @@ export async function upload(
               console.log({ progressEvent });
               client.emit('uploadProgress', { ...progressEvent });
             },
-          })
+          }).catch(e => e.response)
         ) as ImgurApiResponse<ImageData>
       );
     }) as Promise<ImgurApiResponse<ImageData>>;

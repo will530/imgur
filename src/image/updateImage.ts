@@ -33,7 +33,7 @@ export async function updateImage(
               method: 'POST',
               data: form,
               headers: form.getHeaders(),
-            })
+            }).catch(e => e.response)
           ) as ImgurApiResponse<boolean>
         );
       }) as Promise<ImgurApiResponse<boolean>>;
