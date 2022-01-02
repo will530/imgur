@@ -1,34 +1,25 @@
-import { Readable } from 'stream';
-
 export interface AccessToken {
   accessToken: string;
+  refreshToken?: string;
 }
 
 export interface ClientId {
   clientId: string;
+  clientSecret?: string;
 }
 
-export interface Login extends ClientId {
-  username: string;
-  password: string;
-}
-
-export type Credentials = AccessToken | ClientId | Login;
+export type Credentials = AccessToken | ClientId;
 
 export function isAccessToken(arg: unknown): arg is AccessToken {
   return (arg as AccessToken).accessToken !== undefined;
 }
 
-export function isClientId(arg: unknown): arg is ClientId {
-  return (arg as ClientId).clientId !== undefined;
+export function isRefreshToken(arg: unknown): arg is AccessToken {
+  return (arg as AccessToken).refreshToken !== undefined;
 }
 
-export function isLogin(arg: unknown): arg is Login {
-  return (
-    (arg as Login).clientId !== undefined &&
-    (arg as Login).username !== undefined &&
-    (arg as Login).password !== undefined
-  );
+export function isClientId(arg: unknown): arg is ClientId {
+  return (arg as ClientId).clientId !== undefined;
 }
 
 interface CommonData {
@@ -134,14 +125,12 @@ export interface AccountData {
 
 export type GalleryData = Array<ImageData | AlbumData>;
 export interface Payload {
-  image?: string;
-  base64?: string;
+  image?: string | Buffer | ReadableStream;
   type?: 'stream' | 'url' | 'base64';
   name?: string;
   title?: string;
   description?: string;
   album?: string;
-  stream?: Readable;
   disable_audio?: '1' | '0';
 }
 export interface ImgurApiResponse<

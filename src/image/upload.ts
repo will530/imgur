@@ -1,9 +1,5 @@
 import { ImgurClient } from '../client';
-import {
-  createForm,
-  getImgurApiResponseFromResponse,
-  // getSource,
-} from '../common/utils';
+import { createForm, getImgurApiResponseFromResponse } from '../common/utils';
 import { Payload, ImgurApiResponse, ImageData } from '../common/types';
 import { UPLOAD_ENDPOINT, IMAGE_ENDPOINT } from '../common/endpoints';
 

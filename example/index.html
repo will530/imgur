@@ -53,7 +53,9 @@
 
         const init = () => {
             client = new imgur({
+                refreshToken: env.REFRESH_TOKEN,
                 accessToken: env.ACCESS_TOKEN,
+                clientSecret: env.CLIENT_SECRET,
                 clientId: env.CLIENT_ID,
             })
 

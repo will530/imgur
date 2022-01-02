@@ -14,15 +14,3 @@ test('returns provided client id in client id header', async () => {
   const authorizationHeader = await getAuthorizationHeader(client);
   expect(authorizationHeader).toBe(`Client-ID ${clientId}`);
 });
-
-test('retrieves access token from imgur via provided username/password/clientid', async () => {
-  const client = new ImgurClient({
-    username: 'fakeusername',
-    password: 'fakepassword',
-    clientId: 'fakeclientd',
-  });
-  const authorizationHeader = await getAuthorizationHeader(client);
-  expect(authorizationHeader).toMatchInlineSnapshot(
-    `"Bearer 123accesstoken456"`
-  );
-});
