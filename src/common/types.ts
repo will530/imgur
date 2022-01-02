@@ -1,5 +1,3 @@
-import { Readable } from 'stream';
-
 export interface AccessToken {
   accessToken: string;
   refreshToken?: string;
@@ -10,7 +8,7 @@ export interface ClientId {
   clientSecret?: string;
 }
 
-export type Credentials = AccessToken | ClientId ;
+export type Credentials = AccessToken | ClientId;
 
 export function isAccessToken(arg: unknown): arg is AccessToken {
   return (arg as AccessToken).accessToken !== undefined;

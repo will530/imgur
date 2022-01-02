@@ -5,10 +5,7 @@ import {
   isClientId,
 } from './common/types';
 import { ImgurClient } from './client';
-import {
-  IMGUR_API_PREFIX,
-  TOKEN_ENDPOINT,
-} from './common/endpoints';
+import { IMGUR_API_PREFIX, TOKEN_ENDPOINT } from './common/endpoints';
 
 export async function getAuthorizationHeader(
   client: ImgurClient
@@ -34,10 +31,12 @@ export async function getAuthorizationHeader(
     const authorization: any = response.data;
 
     if (response.status === 200 && authorization) {
-      const { access_token: accessToken, refresh_token: refreshToken} = authorization;
+      const { access_token: accessToken, refresh_token: refreshToken } =
+        authorization;
 
       (client.credentials as unknown as AccessToken).accessToken = accessToken;
-      (client.credentials as unknown as AccessToken).refreshToken = refreshToken;
+      (client.credentials as unknown as AccessToken).refreshToken =
+        refreshToken;
 
       return `Bearer ${accessToken}`;
     }
