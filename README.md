@@ -1,5 +1,5 @@
 <h1 align="center" style="border-bottom: none;">imgur</h1>
-<h3 align="center">Unofficial JavaScript library</h3>
+<h3 align="center">Unofficial JavaScript library for the Imgur.com API</h3>
 <p align="center">
   <a href="https://www.npmjs.com/package/imgur">
     <img alt="npm version" src="https://img.shields.io/npm/v/imgur/latest.svg">
@@ -44,11 +44,11 @@ const client = new ImgurClient({ accessToken: process.env.ACCESS_TOKEN });
 // or your client ID
 const client = new ImgurClient({ clientId: process.env.CLIENT_ID });
 
-// or your username/password/client id to retrieve an access token automatically:
+// all credentials with a refresh token, in order to get access tokens automatically
 const client = new ImgurClient({
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD,
   clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  refreshToken: process.env.REFRESH_TOKEN,
 });
 ```
 
@@ -62,39 +62,37 @@ If you don't have any credentials, you'll need to:
 ### Upload one or more images and videos
 
 ```ts
-// multiple images via an array of absolute paths
-const responses = await client.upload([
-  '/home/kai/dank-meme.jpg',
-  '/home/kai/another-dank-meme',
+// multiple images via createReadStream
+const response = await client.upload([
+  {
+    image: createReadStream('/home/kai/dank-meme.jpg'),
+    type: 'stream',
+  },
+  {
+    image: createReadStream('/home/kai/another-dank-meme'),
+    type: 'stream',
+  },
 ]);
-responses.forEach((r) => console.log(r.link));
+response.data.forEach((r) => console.log(r.link));
 ```
 
 If you want to provide metadata, such as a title, description, etc., then pass an object instead of a string:
 
 ```ts
-// multiple images via an array of absolute paths
-const responses = await client.upload([
-  {
-    image: createReadStream('/home/kai/dank-meme.jpg'),
-    title: 'Meme',
-    description: 'Dank Meme',
-  },
-  {
-    image: createReadStream('/home/kai/cat.mp4'),
-    title: 'A Cat Movie',
-    description: 'Caturday',
-  },
-]);
-responses.forEach((r) => console.log(r.link));
+// image via url
+const response = await client.upload({
+  image: 'https://i.imgur.com/someImageHash',
+  title: 'Meme',
+  description: 'Dank Meme',
+});
+console.log(response.data);
 ```
 
 Acceptable key/values match what [the Imgur API expects](https://apidocs.imgur.com/#c85c9dfc-7487-4de2-9ecd-66f727cf3139):
 
 | Key             | Description                                                                                                                         |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `image`         | A string that is a URL pointing to a remote image (up to 10MB)                                                                      |
-| `base64`        | A base 64 object that is to be placed in the the upload form                                                                        |
+| `image`         | A string, stream, or buffer that is a URL pointing to a remote image or video (up to 10MB)                                          |
 | `album`         | The id of the album you want to add the media to. For anonymous albums, album should be the deletehash that is returned at creation |
 | `type`          | The type of the media that's being transmitted; `stream`, `base64` or `url`                                                         |
 | `name`          | The name of the media. This is automatically detected, but you can override                                                         |
