@@ -2,7 +2,7 @@
   "author": "Ken Eucker <keneucker@gmail.com>",
   "name": "imgur",
   "description": "Unofficial JavaScript library for Imgur",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "homepage": "https://github.com/keneucker/imgur",
   "license": "MIT",
   "keywords": [
@@ -19,7 +19,7 @@
     "form-data": "^4.0.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "main": "imgur.node.js",
   "browser": "imgur.js",
@@ -70,11 +70,11 @@
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^10.0.0",
-    "eslint": "^8.5.0",
+    "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.4",
     "jest": "^27.4.5",
-    "lint-staged": "^12.1.4",
+    "lint-staged": "^12.1.5",
     "mock-fs": "^5.1.2",
     "msw": "^0.36.3",
     "node-polyfill-webpack-plugin": "^1.1.4",
