@@ -33,29 +33,46 @@ export function createForm(payload: string | Payload): FormData {
 }
 
 export function getImgurApiResponseFromResponse(
-  response: AxiosResponse | string
+  response: AxiosResponse
 ): ImgurApiResponse {
   let success = true;
   let data;
   let status = 200;
+  const responseIsValid =
+    response &&
+    (typeof response.status !== 'undefined' ||
+      typeof response.data?.status !== 'undefined') &&
+    typeof response.data !== 'undefined';
+  const responseIsSuccess = responseIsValid && !!response.data.success;
+  const responseIsError =
+    responseIsValid &&
+    !responseIsSuccess &&
+    (typeof response.data.data?.error !== 'undefined' ||
+      typeof response.data.errors !== 'undefined');
+
+  const getResponseData = (d) =>
+    Array.isArray(d) ? d.map((t) => (responseIsError ? t.detail : t.data)) : d;
 
   if (typeof response === 'string') {
     data = response as string;
     status = 500;
     success = false;
-  } else if (
-    !!response &&
-    typeof response?.data?.status !== 'undefined' &&
-    typeof response?.data?.success !== 'undefined'
-  ) {
+  } else if (responseIsSuccess) {
     success = response.data.success;
     status = response.data.status;
-    data = response.data.data?.error
-      ? response.data.data?.error
+    data = response.data.data.error
+      ? response.data.data.error
       : response.data.data;
   } else {
-    status = response ? response.status : status;
-    data = response ? response.data : data;
+    status =
+      response.data.data?.error?.code ??
+      response.status ??
+      response.data.status;
+    data = getResponseData(
+      responseIsError
+        ? response.data.errors ?? response.data.data.error.message
+        : response.data.data ?? response.data
+    );
   }
 
   return {

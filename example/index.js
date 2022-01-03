@@ -11,6 +11,7 @@ const imgur = new ImgurClient({
   accessToken: process.env.ACCESS_TOKEN,
   clientSecret: process.env.CLIENT_SECRET,
   clientId: process.env.CLIENT_ID,
+  rapidApiKey: process.env.RAPID_API_KEY,
 });
 
 const run = async (client) => {
