@@ -62,7 +62,7 @@ If you don't have any credentials, you'll need to:
 ### Upload one or more images and videos
 
 ```ts
-// multiple images via createReadStream
+// upload multiple images via fs.createReadStream (node)
 const response = await client.upload([
   {
     image: createReadStream('/home/kai/dank-meme.jpg'),
@@ -79,7 +79,7 @@ response.data.forEach((r) => console.log(r.link));
 If you want to provide metadata, such as a title, description, etc., then pass an object instead of a string:
 
 ```ts
-// image via url
+// upload image via url
 const response = await client.upload({
   image: 'https://i.imgur.com/someImageHash',
   title: 'Meme',
