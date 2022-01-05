@@ -17,9 +17,10 @@ import {
   SearchGalleryOptions,
 } from './gallery';
 import { getAlbum } from './album';
-import { getAlbums, getAlbumsIds } from './account';
+import { getAccount, getAlbums, getAlbumsIds } from './account';
 import { IMGUR_API_PREFIX } from './common/endpoints';
 import {
+  AccountData,
   AlbumData,
   Credentials,
   GalleryData,
@@ -31,14 +32,17 @@ import {
 const USERAGENT = 'imgur (https://github.com/keneucker/imgur)';
 
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
-
 export type { Credentials as ImgurCredentials, ImgurApiResponse };
 export class ImgurClient extends EventEmitter {
   private plainFetcher: AxiosInstance;
   private fetcher: AxiosInstance;
 
-  constructor(readonly credentials: Credentials) {
+  constructor(public credentials: Credentials) {
     super();
+
+    this.credentials.rapidApiHost = credentials.rapidApiKey?.length
+      ? credentials.rapidApiHost ?? 'imgur-apiv3.p.rapidapi.com'
+      : credentials.rapidApiHost;
     const headers =
       typeof window !== 'undefined'
         ? {}
@@ -52,7 +56,9 @@ export class ImgurClient extends EventEmitter {
       responseType: 'json',
     });
     this.fetcher = axios.create({
-      baseURL: IMGUR_API_PREFIX,
+      baseURL: credentials.rapidApiKey?.length
+        ? `https://${this.credentials.rapidApiHost}`
+        : IMGUR_API_PREFIX,
       headers,
       responseType: 'json',
     });
@@ -60,6 +66,11 @@ export class ImgurClient extends EventEmitter {
       async (config: AxiosRequestConfig) => {
         config.headers = config.headers ? config.headers : {};
         config.headers.authorization = await getAuthorizationHeader(this);
+
+        if (credentials.rapidApiKey?.length) {
+          config.headers['x-rapidapi-host'] = credentials.rapidApiHost;
+          config.headers['x-rapidapi-key'] = credentials.rapidApiKey;
+        }
         return config;
       },
       (e: Error) => Promise.reject(e)
@@ -84,6 +95,10 @@ export class ImgurClient extends EventEmitter {
 
   getAlbum(albumHash: string): Promise<ImgurApiResponse<AlbumData>> {
     return getAlbum(this, albumHash);
+  }
+
+  getAccount(account: string): Promise<ImgurApiResponse<AccountData>> {
+    return getAccount(this, account);
   }
 
   getAlbums(

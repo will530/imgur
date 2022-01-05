@@ -53,7 +53,11 @@ export function getImgurApiResponseFromResponse(
   const getResponseData = (d) =>
     Array.isArray(d) ? d.map((t) => (responseIsError ? t.detail : t.data)) : d;
 
-  if (typeof response === 'string') {
+  if (typeof response === 'undefined') {
+    data = 'response was empty';
+    status = 500;
+    success = false;
+  } else if (typeof response === 'string') {
     data = response as string;
     status = 500;
     success = false;
@@ -70,8 +74,10 @@ export function getImgurApiResponseFromResponse(
       response.data.status;
     data = getResponseData(
       responseIsError
-        ? response.data.errors ?? response.data.data.error.message
-        : response.data.data ?? response.data
+        ? response.data.errors ??
+            response.data.data.error.message ??
+            response.data.data.error
+        : response.data.data ?? response.data.message ?? response.data
     );
   }
 
