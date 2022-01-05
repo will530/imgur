@@ -17,6 +17,7 @@ const imgur = new ImgurClient({
 const run = async (client) => {
 
   await getAuthorizationHeader(client).then(console.log)
+  console.log(client.credentials)
 
   const imageStream = createReadStream(join(__dirname, 'small.jpg'));
   const videoStream = createReadStream(join(__dirname, 'small.mp4'));

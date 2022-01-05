@@ -1,14 +1,27 @@
 export interface AccessToken {
-  accessToken: string;
+  accessToken?: string;
   refreshToken?: string;
 }
 
+export interface RapidApiKey {
+  rapidApiHost?: string;
+  rapidApiKey?: string;
+}
+
 export interface ClientId {
-  clientId: string;
+  clientId?: string;
   clientSecret?: string;
 }
 
-export type Credentials = AccessToken | ClientId;
+export interface Credentials extends AccessToken, ClientId, RapidApiKey {}
+
+export interface ImgurTokenResponse {
+  account_username?: string;
+  access_token: string;
+  refresh_token: string;
+  token_type?: string;
+  expires_in?: number;
+}
 
 export function isAccessToken(arg: unknown): arg is AccessToken {
   return (arg as AccessToken).accessToken !== undefined;

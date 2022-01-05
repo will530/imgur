@@ -1,8 +1,9 @@
 import {
-  AccessToken,
   isAccessToken,
   isRefreshToken,
   isClientId,
+  ImgurTokenResponse,
+  Credentials,
 } from './common/types';
 import { ImgurClient } from './client';
 import { IMGUR_API_PREFIX, TOKEN_ENDPOINT } from './common/endpoints';
@@ -14,8 +15,9 @@ export async function getAuthorizationHeader(
     return `Bearer ${client.credentials.accessToken}`;
   }
 
+  const { clientId, clientSecret, refreshToken } = client.credentials;
+
   if (isRefreshToken(client.credentials)) {
-    const { clientId, clientSecret, refreshToken } = client.credentials;
     const options: Record<string, unknown> = {
       url: TOKEN_ENDPOINT,
       baseURL: IMGUR_API_PREFIX,
@@ -28,22 +30,20 @@ export async function getAuthorizationHeader(
       },
     };
     const response = await client.plainRequest(options);
-    const authorization: any = response.data;
 
-    if (response.status === 200 && authorization) {
+    if (response.status === 200 && response.data) {
       const { access_token: accessToken, refresh_token: refreshToken } =
-        authorization;
+        response.data as ImgurTokenResponse;
 
-      (client.credentials as unknown as AccessToken).accessToken = accessToken;
-      (client.credentials as unknown as AccessToken).refreshToken =
-        refreshToken;
+      (client.credentials as Credentials).accessToken = accessToken;
+      (client.credentials as Credentials).refreshToken = refreshToken;
 
       return `Bearer ${accessToken}`;
     }
   }
 
   if (isClientId(client.credentials)) {
-    return `Client-ID ${client.credentials.clientId}`;
+    return `Client-ID ${clientId}`;
   }
 
   return null;
