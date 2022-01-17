@@ -2,7 +2,7 @@
   "author": "Ken Eucker <keneucker@gmail.com>",
   "name": "imgur",
   "description": "Unofficial JavaScript library for Imgur",
-  "version": "2.0.4",
+  "version": "2.1.1",
   "homepage": "https://github.com/keneucker/imgur",
   "license": "MIT",
   "keywords": [
