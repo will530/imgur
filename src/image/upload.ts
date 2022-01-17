@@ -15,6 +15,7 @@ export async function upload(
       typeof image === 'string' ? image : image.path ?? image.name;
     const isVideo =
       p.type === 'stream' &&
+      filename &&
       (filename.indexOf('.mp4') !== -1 || filename.indexOf('.avi') !== -1);
     const url = isVideo ? UPLOAD_ENDPOINT : IMAGE_ENDPOINT;
 
