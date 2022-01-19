@@ -30,7 +30,6 @@ export async function upload(
               data: form,
               headers: form.getHeaders(),
               onUploadProgress: (progressEvent) => {
-                console.log({ progressEvent });
                 client.emit('uploadProgress', { ...progressEvent });
               },
             })
