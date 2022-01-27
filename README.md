@@ -63,16 +63,10 @@ If you don't have any credentials, you'll need to:
 
 ```ts
 // upload multiple images via fs.createReadStream (node)
-const response = await client.upload([
-  {
-    image: createReadStream('/home/kai/dank-meme.jpg'),
-    type: 'stream',
-  },
-  {
-    image: createReadStream('/home/kai/another-dank-meme'),
-    type: 'stream',
-  },
-]);
+const response = await client.upload({
+  image: createReadStream('/home/kai/dank-meme.jpg'),
+  type: 'stream',
+});
 response.data.forEach((r) => console.log(r.link));
 ```
 
@@ -152,18 +146,11 @@ client.updateImage({
 Update multiple images at once:
 
 ```ts
-client.updateImage([
-  {
-    imageHash: 'someImageHash',
-    title: 'A new title',
-    description: 'A new description',
-  },
-  {
-    imageHash: 'anotherImageHash',
-    title: 'A better title',
-    description: 'A better description',
-  },
-]);
+client.updateImage({
+  imageHash: 'someImageHash',
+  title: 'A new title',
+  description: 'A new description',
+});
 ```
 
 Favorite an image:
