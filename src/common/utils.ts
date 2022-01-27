@@ -62,7 +62,6 @@ export function getImgurApiResponseFromResponse(
     status = 500;
     success = false;
   } else if (responseIsSuccess) {
-    success = response.data.success;
     status = response.data.status;
     data = response.data.data.error
       ? response.data.data.error
