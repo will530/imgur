@@ -14,50 +14,27 @@ function isValidUpdatePayload(p: UpdateImagePayload) {
 
 export async function updateImage(
   client: ImgurClient,
-  payload: UpdateImagePayload | UpdateImagePayload[]
-): Promise<ImgurApiResponse<boolean> | ImgurApiResponse<boolean>[]> {
-  if (Array.isArray(payload)) {
-    const promises = payload.map((p: UpdateImagePayload) => {
-      if (!isValidUpdatePayload(p)) {
-        throw new Error('Update requires a title and/or description');
-      }
-
-      const url = `${IMAGE_ENDPOINT}/${p.imageHash}`;
-      const form = createForm(p);
-      /* eslint no-async-promise-executor: 0 */
-      return new Promise(async function (resolve) {
-        return resolve(
-          getImgurApiResponseFromResponse(
-            await client
-              .request({
-                url,
-                method: 'POST',
-                data: form,
-                headers: form.getHeaders(),
-              })
-              .catch((e) => e.response)
-          ) as ImgurApiResponse<boolean>
-        );
-      }) as Promise<ImgurApiResponse<boolean>>;
-    });
-
-    return await Promise.all(promises).then();
-  }
-
+  payload: UpdateImagePayload
+): Promise<ImgurApiResponse<boolean>> {
   if (!isValidUpdatePayload(payload)) {
     throw new Error('Update requires a title and/or description');
   }
 
   const url = `${IMAGE_ENDPOINT}/${payload.imageHash}`;
   const form = createForm(payload);
-  return getImgurApiResponseFromResponse(
-    await client
-      .request({
-        url,
-        method: 'POST',
-        data: form,
-        headers: form.getHeaders(),
-      })
-      .catch((e) => e)
-  ) as ImgurApiResponse<boolean>;
+  /* eslint no-async-promise-executor: 0 */
+  return new Promise(async (resolve) => {
+    return resolve(
+      getImgurApiResponseFromResponse(
+        await client
+          .request({
+            url,
+            method: 'POST',
+            data: form,
+            headers: form.getHeaders(),
+          })
+          .catch((e) => e.response)
+      ) as ImgurApiResponse<boolean>
+    );
+  }) as Promise<ImgurApiResponse<boolean>>;
 }

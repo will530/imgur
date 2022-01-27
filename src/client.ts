@@ -135,15 +135,11 @@ export class ImgurClient extends EventEmitter {
     return getImage(this, imageHash);
   }
 
-  updateImage(
-    payload: UpdateImagePayload | UpdateImagePayload[]
-  ): Promise<ImgurApiResponse<boolean> | ImgurApiResponse<boolean>[]> {
+  updateImage(payload: UpdateImagePayload): Promise<ImgurApiResponse<boolean>> {
     return updateImage(this, payload);
   }
 
-  upload(
-    payload: Payload | Payload[]
-  ): Promise<ImgurApiResponse<ImageData> | ImgurApiResponse<ImageData>[]> {
+  upload(payload: Payload): Promise<ImgurApiResponse<ImageData>> {
     return upload(this, payload);
   }
 }
