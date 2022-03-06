@@ -67,7 +67,7 @@ const response = await client.upload({
   image: createReadStream('/home/kai/dank-meme.jpg'),
   type: 'stream',
 });
-response.data.forEach((r) => console.log(r.link));
+console.log(response.data);
 ```
 
 If you want to provide metadata, such as a title, description, etc., then pass an object instead of a string:
