@@ -16,7 +16,7 @@ import {
   searchGallery,
   SearchGalleryOptions,
 } from './gallery';
-import { getAlbum } from './album';
+import { getAlbum, createAlbum } from './album';
 import { getAccount, getAlbums, getAlbumsIds } from './account';
 import { IMGUR_API_PREFIX } from './common/endpoints';
 import {
@@ -106,6 +106,13 @@ export class ImgurClient extends EventEmitter {
     page?: number
   ): Promise<ImgurApiResponse<AlbumData[]>> {
     return getAlbums(this, account, page);
+  }
+
+  createAlbum(
+    title?: string,
+    description?: string
+  ): Promise<ImgurApiResponse<AlbumData>> {
+    return createAlbum(this, title, description);
   }
 
   getAlbumsIds(
