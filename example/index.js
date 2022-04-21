@@ -22,8 +22,10 @@ const run = async (client) => {
   const imageStream = createReadStream(join(__dirname, 'small.jpg'));
   const videoStream = createReadStream(join(__dirname, 'small.mp4'));
 
-  await client.upload({ album, image: imageStream, type: 'stream' }).then(console.log);
-  await client.upload({ album, image: videoStream, type: 'stream' }).then(console.log);
+  await client.createAlbum('test').then(console.log)
+
+  // await client.upload({ album, image: imageStream, type: 'stream' }).then(console.log);
+  // await client.upload({ album, image: videoStream, type: 'stream' }).then(console.log);
 
 }
 

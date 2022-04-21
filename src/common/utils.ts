@@ -16,7 +16,7 @@ export function createForm(payload: string | Payload): FormData {
       if (supportedUploadObjectTypes.indexOf(payload.type as string) !== -1) {
         form.append(key, payload);
       }
-    } else {
+    } else if (value) {
       form.append(key, value);
     }
   }
